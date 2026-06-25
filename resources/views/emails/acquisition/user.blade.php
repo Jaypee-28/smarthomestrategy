@@ -26,8 +26,7 @@
             <p style="margin-bottom: 0;">Best Regards,<br><strong>SmartHomeStrategy.com</strong></p>
         </div>
         <div class="footer">
-            &copy; {{ date('Y') }} SmartHomeStrategy.com. All rights reserved.<br>
-            This is an automated message. Please do not reply directly to this email.
+            &copy; {{ date('Y') }} SmartHomeStrategy.com. All rights reserved.
         </div>
     </div>
 </body>
