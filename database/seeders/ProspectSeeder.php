@@ -10,8 +10,8 @@ class ProspectSeeder extends Seeder
 {
     public function run(): void
     {
-        $prospectFile = 'C:\Users\CHITECH\.gemini\antigravity-ide\brain\d2fbb056-b653-4ccc-9127-987c84baf15b\prospect_crm.md';
-        $pitchFile = 'C:\Users\CHITECH\.gemini\antigravity-ide\brain\d2fbb056-b653-4ccc-9127-987c84baf15b\pitch_crm.md';
+        $prospectFile = database_path('data/prospect_crm.md');
+        $pitchFile = database_path('data/pitch_crm.md');
 
         $prospectsData = $this->parseMarkdownTable($prospectFile, ['Company', 'Contact Name', 'Title', 'Email', 'Niche', 'Status']);
         // The column in prospect_crm.md might be "Email" or "Email (Estimated)"
