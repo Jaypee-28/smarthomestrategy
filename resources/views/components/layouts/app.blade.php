@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ $title ?? 'Smart Home Strategy | The Future of Intelligent Living' }}</title>
         <meta name="description" content="AI-powered smart home strategies that transform everyday living into a seamless, connected experience.">
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

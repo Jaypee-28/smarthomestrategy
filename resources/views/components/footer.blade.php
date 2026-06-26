@@ -15,9 +15,8 @@
                     The future of intelligent living. Elevating the standard for connected, AI-powered environments globally.
                 </p>
                 <div class="flex space-x-4">
-                    <a href="mailto:hello@smarthomestrategy.com" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        <span class="text-sm">hello@smarthomestrategy.com</span>
+                    <a href="mailto:hello@smarthomestrategy.com" class="text-slate-400 hover:text-white transition-colors flex items-center justify-center" title="Contact Us">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </a>
                 </div>
             </div>
