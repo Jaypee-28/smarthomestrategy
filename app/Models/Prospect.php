@@ -15,5 +15,11 @@ class Prospect extends Model
         'template_id',
         'hook',
         'status',
+        'follow_up_count',
+        'last_contacted_at',
+    ];
+
+    protected $casts = [
+        'last_contacted_at' => 'datetime',
     ];
 }

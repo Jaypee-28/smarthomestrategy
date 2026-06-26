@@ -20,9 +20,36 @@
     >
         <!-- Header -->
         <div class="flex justify-between items-center px-6 py-4 border-b border-gray-800">
-            <h3 class="text-lg font-bold text-white">Draft Pitch: <span x-text="activeProspect?.company" class="text-blue-400"></span></h3>
-            <button @click="closeModal" class="text-gray-400 hover:text-white transition">
+            <div>
+                <h3 class="text-lg font-bold text-white">Draft Pitch: <span x-text="activeProspect?.company" class="text-blue-400"></span></h3>
+            </div>
+            <button @click="closeModal" class="text-gray-400 hover:text-white transition focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+
+        <!-- Follow-Up Tabs -->
+        <div class="px-6 py-3 border-b border-gray-800 bg-gray-900/50 flex space-x-2 overflow-x-auto">
+            <button 
+                @click="setTab('Initial')"
+                class="px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition border"
+                :class="currentTab === 'Initial' ? 'bg-blue-600/20 text-blue-400 border-blue-500/50' : 'bg-transparent text-gray-500 border-gray-700 hover:text-gray-300'"
+            >
+                Initial Pitch
+            </button>
+            <button 
+                @click="setTab('FollowUp1')"
+                class="px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition border"
+                :class="currentTab === 'FollowUp1' ? 'bg-yellow-600/20 text-yellow-400 border-yellow-500/50' : 'bg-transparent text-gray-500 border-gray-700 hover:text-gray-300'"
+            >
+                Follow-Up 1 (The Bump)
+            </button>
+            <button 
+                @click="setTab('FollowUp2')"
+                class="px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition border"
+                :class="currentTab === 'FollowUp2' ? 'bg-red-600/20 text-red-400 border-red-500/50' : 'bg-transparent text-gray-500 border-gray-700 hover:text-gray-300'"
+            >
+                Follow-Up 2 (The Breakup)
             </button>
         </div>
 
@@ -42,7 +69,7 @@
             <div class="mb-4">
                 <div class="flex justify-between items-end mb-1">
                     <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Message Body:</label>
-                    <button @click="copyToClipboard" class="text-xs text-blue-400 hover:text-blue-300 transition flex items-center">
+                    <button @click="copyToClipboard" class="text-xs text-blue-400 hover:text-blue-300 transition flex items-center focus:outline-none">
                         <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
                         Copy
                     </button>
@@ -50,24 +77,24 @@
                 <textarea 
                     readonly 
                     x-model="generatedEmail" 
-                    class="w-full h-64 bg-gray-950 border border-gray-800 rounded px-3 py-3 text-sm text-gray-300 focus:outline-none resize-none"
+                    class="w-full h-48 sm:h-64 bg-gray-950 border border-gray-800 rounded px-3 py-3 text-sm text-gray-300 focus:outline-none resize-none"
                 ></textarea>
             </div>
         </div>
 
         <!-- Footer Actions -->
         <div class="px-6 py-4 border-t border-gray-800 flex justify-between items-center bg-gray-900 rounded-b-xl">
-            <button @click="markAsSent" class="text-sm text-gray-400 hover:text-white transition">
-                Mark as "Sent"
+            <button @click="executeSendAction" class="text-sm text-gray-400 hover:text-white transition focus:outline-none hidden sm:block">
+                Mark as "Sent" / Log F/U
             </button>
-            <div class="flex space-x-3">
-                <button @click="closeModal" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm font-medium rounded transition">
+            <div class="flex space-x-3 w-full sm:w-auto justify-end">
+                <button @click="closeModal" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white text-sm font-medium rounded transition focus:outline-none">
                     Cancel
                 </button>
                 <a 
                     :href="getMailtoLink()"
                     target="_blank"
-                    @click="setTimeout(() => updateStatus(activeProspect.id, 'Sent').then(()=>window.location.reload()), 1000)"
+                    @click="executeSendAction"
                     class="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded shadow transition flex items-center"
                 >
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>

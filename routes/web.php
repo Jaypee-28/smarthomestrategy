@@ -24,5 +24,6 @@ Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.log
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [CrmController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/prospects/{prospect}/status', [CrmController::class, 'updateStatus'])->name('admin.prospect.status');
+    Route::post('/admin/prospects/{prospect}/follow-up', [CrmController::class, 'logFollowUp'])->name('admin.prospect.followup');
 });
 Route::get('/acquisition/success', [AcquisitionController::class, 'success'])->name('acquisition.success');
