@@ -143,3 +143,4 @@
 | **Om Wave** | Sarah | C | Voice-integrated lighting that adapts to behavior is the next evolution of the smart home. |
 | **CoverTree** | Adarsh | B | Connected home data is going to completely rewrite how InsurTech assesses risk. |
 | **National** | Rob | B | Bridging the gap between complex hardware and user experience is where the real value is. |
+| Maxwell Testing | Maxwell Paul | A | This is a test of the Hostinger SMTP outbound engine. |

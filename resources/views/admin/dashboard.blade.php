@@ -26,7 +26,6 @@
                     <p class="text-sm font-medium text-white leading-tight">{{ auth()->user()->name }}</p>
                     <p class="text-xs text-gray-400">Administrator</p>
                 </div>
-                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             
             <div x-show="open" x-transition.opacity.scale.95 class="absolute right-0 mt-3 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-xl py-1 z-50" style="display: none;">
