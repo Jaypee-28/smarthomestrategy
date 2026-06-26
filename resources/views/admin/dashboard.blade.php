@@ -184,6 +184,7 @@
             Alpine.data('crmData', () => ({
                 templates: @json($templates),
                 isModalOpen: false,
+                isSending: false,
                 activeProspect: null,
                 generatedEmail: '',
                 subjectLine: '',
@@ -228,6 +229,7 @@
                 },
                 
                 closeModal() {
+                    if(this.isSending) return;
                     this.isModalOpen = false;
                     this.activeProspect = null;
                 },
@@ -237,15 +239,7 @@
                     alert('Pitch copied to clipboard!');
                 },
 
-                getMailtoLink() {
-                    if(!this.activeProspect) return '#';
-                    const to = this.activeProspect.email;
-                    const subject = encodeURIComponent(this.subjectLine);
-                    const body = encodeURIComponent(this.generatedEmail);
-                    return `mailto:${to}?subject=${subject}&body=${body}`;
-                },
-
-                async executeSendAction() {
+                async markAsSentOnly() {
                     if(!this.activeProspect) return;
                     
                     try {
@@ -254,16 +248,46 @@
                         } else {
                             // It's a follow up
                             const token = document.querySelector('meta[name="csrf-token"]').content;
-                            const res = await fetch(`/admin/prospects/${this.activeProspect.id}/follow-up`, {
+                            await fetch(`/admin/prospects/${this.activeProspect.id}/follow-up`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': token }
                             });
-                            if(!res.ok) throw new Error('Network error');
                         }
                         
-                        setTimeout(() => window.location.reload(), 1000); // Reload to reflect fresh data
+                        window.location.reload(); 
                     } catch (e) {
                         console.error(e);
+                    }
+                },
+
+                async sendEmailViaSmtp() {
+                    if(!this.activeProspect || this.isSending) return;
+                    
+                    this.isSending = true;
+                    
+                    try {
+                        const token = document.querySelector('meta[name="csrf-token"]').content;
+                        const res = await fetch(`/admin/prospects/${this.activeProspect.id}/send`, {
+                            method: 'POST',
+                            headers: { 
+                                'Content-Type': 'application/json', 
+                                'X-CSRF-TOKEN': token 
+                            },
+                            body: JSON.stringify({
+                                subject: this.subjectLine,
+                                body: this.generatedEmail,
+                                type: this.currentTab
+                            })
+                        });
+
+                        if(!res.ok) throw new Error('Network error');
+                        
+                        alert('Email sent successfully!');
+                        window.location.reload(); 
+                    } catch (e) {
+                        console.error(e);
+                        alert('Failed to send email. Check error logs.');
+                        this.isSending = false;
                     }
                 },
 
