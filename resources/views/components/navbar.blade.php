@@ -1,4 +1,4 @@
-<nav class="fixed w-full z-50 glass border-b-0 border-white/5 transition-all duration-300" x-data="{ scrolled: false }" @scroll.window="scrolled = (window.pageYOffset > 20)">
+<nav class="fixed w-full z-50 glass border-b-0 border-white/5 transition-all duration-300" x-data="{ scrolled: false, mobileMenuOpen: false }" @scroll.window="scrolled = (window.pageYOffset > 20)">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
             <!-- Logo -->
@@ -13,9 +13,9 @@
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
-                <a href="#features" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Features</a>
-                <a href="#showcase" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Platform</a>
-                <a href="#testimonials" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Customers</a>
+                <a href="/#features" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Features</a>
+                <a href="/#showcase" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Platform</a>
+                <a href="/#testimonials" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Customers</a>
                 <a href="{{ route('acquisition.show') }}" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Acquisition</a>
             </div>
 
@@ -28,12 +28,34 @@
 
             <!-- Mobile menu button -->
             <div class="md:hidden flex items-center">
-                <button class="text-slate-300 hover:text-white focus:outline-none">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="text-slate-300 hover:text-white focus:outline-none">
+                    <svg x-show="!mobileMenuOpen" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg x-show="mobileMenuOpen" class="h-6 w-6 hidden" :class="{'hidden': !mobileMenuOpen}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div x-show="mobileMenuOpen" 
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 -translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 -translate-y-2"
+         class="md:hidden glass border-t border-white/10 hidden"
+         :class="{'hidden': !mobileMenuOpen}"
+         @click.away="mobileMenuOpen = false">
+        <div class="px-4 pt-2 pb-6 space-y-1 shadow-2xl">
+            <a @click="mobileMenuOpen = false" href="/#features" class="block px-3 py-3 rounded-md text-base font-medium text-white hover:bg-white/5">Features</a>
+            <a @click="mobileMenuOpen = false" href="/#showcase" class="block px-3 py-3 rounded-md text-base font-medium text-white hover:bg-white/5">Platform</a>
+            <a @click="mobileMenuOpen = false" href="/#testimonials" class="block px-3 py-3 rounded-md text-base font-medium text-white hover:bg-white/5">Customers</a>
+            <a @click="mobileMenuOpen = false" href="{{ route('acquisition.show') }}" class="block px-3 py-3 rounded-md text-base font-medium text-cyan-400 hover:bg-white/5">Acquisition</a>
         </div>
     </div>
 </nav>
