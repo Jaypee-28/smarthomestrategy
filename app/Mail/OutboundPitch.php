@@ -31,6 +31,7 @@ class OutboundPitch extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: new \Illuminate\Mail\Mailables\Address('maxwell@smarthomestrategy.com', 'Maxwell from Smart Home Strategy'),
             subject: $this->subjectLine,
         );
     }

@@ -17,19 +17,22 @@
         </div>
         
         <!-- Modern Profile Dropdown -->
-        <div class="relative" x-data="{ open: false }">
-            <button @click="open = !open" @click.outside="open = false" class="flex items-center space-x-3 focus:outline-none">
-                <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold shadow-lg ring-2 ring-gray-800">
-                    {{ substr(auth()->user()->name, 0, 1) }}
-                </div>
-                <div class="hidden sm:block text-left">
-                    <p class="text-sm font-medium text-white leading-tight">{{ auth()->user()->name }}</p>
-                    <p class="text-xs text-gray-400">Administrator</p>
-                </div>
-            </button>
-            
-            <div x-show="open" x-transition.opacity.scale.95 class="absolute right-0 mt-3 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-xl py-1 z-50" style="display: none;">
-                <div class="px-4 py-2 border-b border-gray-700 mb-1">
+        <div class="flex items-center space-x-6">
+            <a href="{{ route('admin.templates.index') }}" class="text-sm font-medium text-gray-300 hover:text-white transition hidden sm:block">Templates</a>
+            <div class="relative" x-data="{ open: false }">
+                <button @click="open = !open" @click.outside="open = false" class="flex items-center space-x-3 focus:outline-none">
+                    <div class="w-9 h-9 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold shadow-lg ring-2 ring-gray-800">
+                        {{ substr(auth()->user()->name, 0, 1) }}
+                    </div>
+                    <div class="hidden sm:block text-left">
+                        <p class="text-sm font-medium text-white leading-tight">{{ auth()->user()->name }}</p>
+                        <p class="text-xs text-gray-400">Administrator</p>
+                    </div>
+                </button>
+                
+                <div x-show="open" x-transition.opacity.scale.95 class="absolute right-0 mt-3 w-48 bg-gray-800 border border-gray-700 rounded-lg shadow-xl py-1 z-50" style="display: none;">
+                    <a href="{{ route('admin.templates.index') }}" class="block sm:hidden px-4 py-2 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white transition border-b border-gray-700">Manage Templates</a>
+                    <div class="px-4 py-2 border-b border-gray-700 mb-1">
                     <p class="text-sm text-white font-medium">{{ auth()->user()->name }}</p>
                     <p class="text-xs text-gray-400 truncate">{{ auth()->user()->email }}</p>
                 </div>
@@ -203,25 +206,38 @@
 
                     if(tab === 'Initial') {
                         templateKey = this.activeProspect.template_id;
-                        body = this.templates[templateKey] || "No template assigned.";
-                        if(this.activeProspect.hook) {
-                            body = this.activeProspect.hook + "\n\n" + body;
+                        let t = this.templates[templateKey];
+                        if(t) {
+                            body = t.body;
+                            subject = t.subject;
+                        } else {
+                            body = "No template assigned.";
+                            subject = 'SmartHomeStrategy.com';
                         }
-
-                        if(templateKey === 'A') subject = 'SmartHomeStrategy.com + ' + this.activeProspect.company;
-                        else if(templateKey === 'B') subject = 'Acquisition of SmartHomeStrategy.com';
-                        else if(templateKey === 'C') subject = 'SmartHomeStrategy.com';
-                        else if(templateKey === 'D') subject = 'digital asset: SmartHomeStrategy.com';
-                        else subject = 'SmartHomeStrategy.com';
+                        // Hook will be parsed via {hook} variable in the template
                     } 
                     else if (tab === 'FollowUp1') {
-                        body = this.templates['FollowUp1'];
-                        subject = 'Re: SmartHomeStrategy.com + ' + this.activeProspect.company; // Simulating a reply
+                        let t = this.templates['FollowUp1'];
+                        body = t ? t.body : '';
+                        subject = t ? t.subject : '';
                     }
                     else if (tab === 'FollowUp2') {
-                        body = this.templates['FollowUp2'];
-                        subject = 'Re: SmartHomeStrategy.com + ' + this.activeProspect.company;
+                        let t = this.templates['FollowUp2'];
+                        body = t ? t.body : '';
+                        subject = t ? t.subject : '';
                     }
+
+                    // Parse variables
+                    let firstname = this.activeProspect.contact_name ? this.activeProspect.contact_name.split(' ')[0] : 'there';
+                    let company = this.activeProspect.company || '';
+                    let hook = this.activeProspect.hook ? this.activeProspect.hook + '\n\n' : '';
+
+                    body = body.replace(/{firstname}/g, firstname);
+                    body = body.replace(/{company}/g, company);
+                    body = body.replace(/{hook}\n\n/g, hook);
+                    body = body.replace(/{hook}/g, this.activeProspect.hook || '');
+                    subject = subject.replace(/{firstname}/g, firstname);
+                    subject = subject.replace(/{company}/g, company);
 
                     this.generatedEmail = body;
                     this.subjectLine = subject;
